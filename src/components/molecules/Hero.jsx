@@ -13,14 +13,15 @@ function Hero() {
             backgroundPosition: 'center',
             backgroundRepeat: 'no-repeat',
         }}>
-            <h1 className='text-center texl-xl text-textLight-primary'>Revolusi Pembelajaran: Temukan 
+            <h1 className='text-center text-textLight-primary text-3xl md:text-4xl lg:text-5xl'>
+                Revolusi Pembelajaran: Temukan 
                 Ilmu Baru melalui Platform Video Interaktif!
             </h1>
             <p className='text-center text-textLight-primary my-6'>
                 Temukan ilmu baru yang menarik dan mendalam melalui koleksi video pembelajaran berkualitas tinggi.
                 Tidak hanya itu, Anda juga dapat berpartisipasi dalam latihan interaktif yang akan meningkatkan pemahaman Anda.
             </p>
-            <button className='w-md h-14 justify-center mx-70 bg-primary-default rounded-xl text-textLight-primary font-bold text-lg'
+            <button className='flex mx-auto p-2 md:px-6 justify-center bg-primary-default rounded-xl text-textLight-primary md:font-bold'
             type="button">
                 Temukan Video Course untuk Dipelajari!
             </button>

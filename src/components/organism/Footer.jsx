@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState } from 'react';
 
 function Footer() {
     const [expandedSections, setExpandedSections] = useState({
@@ -18,7 +18,7 @@ function Footer() {
     <>
     <footer className='border-t border-other-border bg-other-primaryBackground w-full mt-16 py-8'>
         <div className='container mx-auto px-4 lg:px-20'>
-            {/* Main Footer Content - Horizontal Layout */}
+            {/* Main Footer Content */}
             <div className='flex flex-col md:flex-row justify-between mb-8'>
                 {/* Company Info Section - Left Side */}
                 <div className='w-full md:w-1/3 mb-8 md:mb-0 md:pr-12'>
@@ -39,10 +39,10 @@ function Footer() {
                 </div>
 
                 {/* Footer Links Section - Right Side */}
-                <div className='w-full md:w-3/5 md:pl-8'>
+                <div className='w-full md:4/5 md:'>
                     <div className='flex flex-wrap'>
-                        {/* Kategori Column - Collapsible on md and sm */}
-                        <div className='w-full sm:w-1/3 mb-4 sm:mb-0'>
+                        {/* Kategori Column */}
+                        <div className='w-full md:w-1/3 mb-4 md:mb-0'>
                             <div 
                                 className='flex justify-between items-center cursor-pointer md:cursor-default'
                                 onClick={() => toggleSection('kategori')}
@@ -61,8 +61,8 @@ function Footer() {
                             </ul>
                         </div>
 
-                        {/* Perusahaan Column - Collapsible on md and sm */}
-                        <div className='w-full sm:w-1/3 mb-4 sm:mb-0'>
+                        {/* Perusahaan Column */}
+                        <div className='w-full md:w-1/3 mb-4 md:mb-0'>
                             <div 
                                 className='flex justify-between items-center cursor-pointer md:cursor-default'
                                 onClick={() => toggleSection('perusahaan')}
@@ -81,8 +81,8 @@ function Footer() {
                             </ul>
                         </div>
 
-                        {/* Komunitas Column - Collapsible on md and sm */}
-                        <div className='w-full sm:w-1/3'>
+                        {/* Komunitas Column */}
+                        <div className='w-full md:w-1/3'>
                             <div 
                                 className='flex justify-between items-center cursor-pointer md:cursor-default'
                                 onClick={() => toggleSection('komunitas')}
@@ -102,29 +102,33 @@ function Footer() {
             </div>
 
             {/* Copyright Section */}
-            <div className='flex justify-center items-center text-textDark-secondary border-t border-other-border pt-4'>
+            <div className='flex flex-col-reverse md:flex-row md:justify-between md:items-center text-textDark-secondary border-t border-other-border pt-4 gap-3'>
+                <div className='md:bottom'>
                 <p className=''>@2023 Gerobak Sayur All Rights Reserved.</p>
+                </div>
                 {/* Social Media Icons */}
+                <div className='flex gap-5'>
                 <img 
-                    src={'src/assets/images/facebook.svg'} 
+                    src={'src/assets/images/linkedin.svg'} 
                     alt="Facebook" 
-                    className='w-6 h-6'
+                    className='w-10 h-10'
                 />
                 <img 
-                    src={'src/assets/images/linkedin.svg'}
+                    src={'src/assets/images/facebook.svg'}
                     alt="LinkedIn" 
-                    className='w-6 h-6'
+                    className='w-10 h-10'
                 />
                 <img 
                     src={'src/assets/images/instagram.svg'}
                     alt="Instagram" 
-                    className='w-6 h-6'
+                    className='w-10 h-10'
                 />
                 <img 
                     src={'src/assets/images/twitter.svg'}
                     alt="Twitter" 
-                    className='w-6 h-6'
+                    className='w-10 h-10'
                 />
+                </div>
             </div>
         </div>
     </footer>

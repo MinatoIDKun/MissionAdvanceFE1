@@ -3,7 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import GoogleButton from '../atoms/GoogleButton.jsx';
 import Divider from '../atoms/Divider.jsx';
 
-function LoginForm () {
+
+function LoginForm ({onLogin}) {
     const [email, setEmail] = useState('');
     const [kataSandi, setKataSandi] = useState('');
     const [showPassword, setShowPassword] = useState(false);
@@ -11,15 +12,14 @@ function LoginForm () {
 
     const handleLogin = (e) => {
         e.preventDefault()
-        // Implement login logic here
         console.log('Login dengan:', email, kataSandi)
 
         navigate ('/home')
     };
 
     const goToRegister = () => {
-        navigate ('/register')
-    };
+        navigate ('/register');
+    }
 
     const togglePasswordVisibility = () => {
         setShowPassword(!showPassword);
@@ -27,16 +27,16 @@ function LoginForm () {
 
   return (
     <>
-    <section className=''>
-        <div className='w-3xl lg:w-3xl mx-auto sm:p-6 p-9 bg-other-primaryBackground border-1 border-other-border rounded-ss-sm'>
+        <div className='container w-sm md:w-2xl lg:w-3xl lg:mt-0 mx-auto md:p-6 p-4 bg-other-primaryBackground border-1 border-other-border rounded-ss-sm'>
             <form onSubmit={handleLogin}>
-                <h1 className='text-center'>Masuk ke Akun</h1>
-                <h6 className='text-textDark-secondary font-light text-center'>Yuk, lanjutin belajarmu di videobelajar</h6>
-                <div className='mt-9'>
+                <h1 className='text-center text-2xl md:text-3xl lg:text-5xl lg:mb-2'>Masuk ke Akun</h1>
+                <h6 className='text-textDark-secondary font-light text-center text-base md:text-md lg:text-xl'>Yuk, lanjutin belajarmu di videobelajar</h6>
+                <div className='mt-6 md:mt-7 lg:mt-8 xl:mt-9'>
+
+                    {/* Email input */}
                     <label className='block text-sm font-medium text-textDark-primary mb-1'>E-Mail
                         <span className='text-red-600 ml-1.5'>*</span>
-                    </label>
-                    <input 
+                        <input 
                         type="email" 
                         id="E-mail" 
                         value={email} 
@@ -44,7 +44,9 @@ function LoginForm () {
                         required
                         className='w-full h-12 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:border-primary-500 mb-6'
                     />
+                    </label>
 
+                    {/* Password Input */}
                     <label className='block text-sm font-medium text-textDark-primary mb-1'>Kata Sandi
                         <span className='text-red-600 ml-1.5'>*</span>
                     </label>
@@ -77,19 +79,21 @@ function LoginForm () {
                     </div>
                     
 
-                    <p className='text-right font-medium text-textDark-tertiary hover:text-primary-400 cursor-pointer text-sm mb-6'>
+                    <p className='text-right font-medium text-textDark-tertiary hover:text-primary-400 cursor-pointer text-sm md:mb-4 lg:mb-6'>
                         Lupa Password?
                     </p>
 
                     <button type='submit'
-                    className='bg-primary-default text-textLight-primary w-full h-14 rounded-xl mt-6 font-medium cursor-pointer'>
+                    className='bg-primary-default text-textLight-primary w-full h-8 md:h-12 lg:h-14 rounded-xl mt-6 font-medium cursor-pointer'
+                    onSubmit={onLogin}
+                    >
                         Masuk
                     </button>
 
                     <button 
                         type='button' 
                         onClick={goToRegister}
-                        className='bg-primary-100 text-primary-default w-full h-14 rounded-xl mt-4 font-medium cursor-pointer'
+                        className='bg-primary-100 text-primary-default w-full h-8 md:h-12 lg:h-14 rounded-xl mt-4 font-medium cursor-pointer'
                     >
                         Daftar
                     </button>
@@ -100,9 +104,8 @@ function LoginForm () {
                 </div>
             </form>
         </div>
-    </section>
     </>
   )
 }
 
-export default LoginForm
+export default LoginForm;

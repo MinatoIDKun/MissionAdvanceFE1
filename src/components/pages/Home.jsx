@@ -3,35 +3,31 @@ import { useNavigate } from 'react-router-dom';
 import CardSection from '../organism/CardSection.jsx';
 import Hero from '../molecules/Hero.jsx';
 import Newsletter from '../molecules/Newsletter.jsx';
-import Navbar from '../organism/Navbar.jsx';
-import Footer from '../organism/Footer.jsx';
+import RootLayouts from '../layouts/RootLayouts.jsx';
 
 
-function Home () {
-
+function Home() {
   return (
-    <>
-    <main className='bg-baseBackground h-screen '>
-      <div>
-        <Navbar />
-      </div>
-      <div className='py-25 px-30'>
-        <div className='flex justify-center'>
-          <Hero />
+    <div className="flex flex-col min-h-screen bg-baseBackground">
+      <main className="flex-grow pt-32">
+        <div className="container mx-auto px-4 lg:px-20">
+          <section className="mb-16">
+            <Hero />
+          </section>
+          
+          <section className="mb-16">
+            <CardSection />
+          </section>
+          
+          <section className="mb-16">
+            <Newsletter />
+          </section>
         </div>
-        <div className='flex justify-center'>
-          <CardSection />
-        </div>
-        <div className='flex justify-center'>
-          <Newsletter />
-        </div>
-      </div>
-      <div className='flex justify-center'>
-        <Footer />
-      </div>
-    </main>
-    </>
-  )
+      </main>
+      
+      <RootLayouts isLoggedIn/>
+    </div>
+  );
 }
 
-export default Home
+export default Home;

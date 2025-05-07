@@ -1,5 +1,5 @@
 {
-  "name": "missionintermediatefe1",
+  "name": "missionadvancefe1",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -11,6 +11,9 @@
   },
   "dependencies": {
     "@tailwindcss/vite": "^4.0.8",
+    "axios": "^1.9.0",
+    "dotenv": "^16.5.0",
+    "prop-types": "^15.8.1",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-router": "^7.3.0",
