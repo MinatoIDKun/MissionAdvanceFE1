@@ -1,50 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import Card from '../molecules/Card';
 
 function Admin() {
-  // Initial sample data
-  const initialCards = [
-    {
-      id: 1,
-      imageUrl: "src/assets/images/Card-Images/img1.svg",
-      title: "Big 4 Auditor Financial Analyst",
-      description: "Mulai transformasi dengan instruktur profesional, harga yang terjangkau dan kurikulum terbaik.",
-      avatar: "Jenna Ortega",
-      role: "Senior accountant di Gojek",
-      ratingIcon: "src/assets/images/yellow-star.svg",
-      rating: "3.5 (86)",
-      profileIcon: "src/assets/images/Avatar-Icon/avatar1.svg",
-      price: "300K"
-    },
-    {
-      id: 2,
-      imageUrl: "src/assets/images/Card-Images/img2.svg",
-      title: "Data Analyst Professional",
-      description: "Pelajari analisis data dengan mentor berpengalaman dari perusahaan terkemuka.",
-      avatar: "Robert Smith",
-      role: "Data Scientist di Tokopedia",
-      ratingIcon: "src/assets/images/yellow-star.svg",
-      rating: "4.2 (124)",
-      profileIcon: "src/assets/images/Avatar-Icon/avatar2.svg",
-      price: "450K"
-    },
-    {
-      id: 3,
-      imageUrl: "src/assets/images/Card-Images/img3.svg",
-      title: "UI/UX Design Fundamentals",
-      description: "Kuasai dasar-dasar desain UI/UX dan bangun portofolio yang menarik.",
-      avatar: "Sarah Johnson",
-      role: "Lead Designer di Traveloka",
-      ratingIcon: "src/assets/images/yellow-star.svg",
-      rating: "4.8 (210)",
-      profileIcon: "src/assets/images/Avatar-Icon/avatar3.svg",
-      price: "375K"
-    }
-  ];
-
-  // State for cards data
   const [cards, setCards] = useState([]);
-  // State for form data
   const [formData, setFormData] = useState({
     imageUrl: "",
     title: "",
@@ -56,23 +14,14 @@ function Admin() {
     profileIcon: "",
     price: ""
   });
-  // State for edit mode
   const [editMode, setEditMode] = useState(false);
   const [currentId, setCurrentId] = useState(null);
-  // State for modal visibility
   const [isModalOpen, setIsModalOpen] = useState(false);
-  // State for search
   const [searchTerm, setSearchTerm] = useState("");
-  // State for preview images
   const [imagePreview, setImagePreview] = useState(null);
   const [avatarPreview, setAvatarPreview] = useState(null);
 
-  // Load initial data
-  useEffect(() => {
-    setCards(initialCards);
-  }, []);
 
-  // Handle form input changes
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData({
@@ -81,7 +30,7 @@ function Admin() {
     });
   };
 
-  // Handle image file uploads
+
   const handleImageUpload = (e, type) => {
     const file = e.target.files[0];
     if (file) {
@@ -105,7 +54,6 @@ function Admin() {
     }
   };
 
-  // Reset form data
   const resetForm = () => {
     setFormData({
       imageUrl: "",
@@ -124,13 +72,11 @@ function Admin() {
     setCurrentId(null);
   };
 
-  // Open modal for adding new card
   const handleAddNew = () => {
     resetForm();
     setIsModalOpen(true);
   };
 
-  // Open modal for editing existing card
   const handleEdit = (id) => {
     const cardToEdit = cards.find(card => card.id === id);
     if (cardToEdit) {
@@ -143,34 +89,28 @@ function Admin() {
     }
   };
 
-  // Handle form submission
   const handleSubmit = (e) => {
     e.preventDefault();
     
     if (editMode) {
-      // Update existing card
       setCards(cards.map(card => 
         card.id === currentId ? { ...formData, id: currentId } : card
       ));
     } else {
-      // Add new card
       const newId = cards.length > 0 ? Math.max(...cards.map(card => card.id)) + 1 : 1;
       setCards([...cards, { ...formData, id: newId }]);
     }
     
-    // Close modal and reset form
     setIsModalOpen(false);
     resetForm();
   };
 
-  // Handle card deletion
   const handleDelete = (id) => {
     if (window.confirm("Are you sure you want to delete this card?")) {
       setCards(cards.filter(card => card.id !== id));
     }
   };
 
-  // Filter cards based on search term
   const filteredCards = cards.filter(card => 
     card.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
     card.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -200,7 +140,6 @@ function Admin() {
             </div>
           </div>
 
-          {/* Cards Grid */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {filteredCards.map(card => (
               <div key={card.id} className="relative group">
@@ -237,7 +176,6 @@ function Admin() {
         </section>
       </div>
 
-      {/* Modal for Add/Edit Form */}
       {isModalOpen && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
           <div className="bg-white rounded-lg p-6 w-full max-w-3xl max-h-[90vh] overflow-y-auto">
@@ -258,9 +196,7 @@ function Admin() {
 
             <form onSubmit={handleSubmit} className="space-y-6">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                {/* Left Column */}
                 <div className="space-y-4">
-                  {/* Card Image */}
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">Card Image</label>
                     <div className="flex flex-col items-center">
