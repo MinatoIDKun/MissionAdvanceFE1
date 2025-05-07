@@ -1,8 +1,14 @@
-import React, { useState, useMemo, Profiler } from 'react';
+import React, { useState, useMemo } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Card from '../molecules/Card.jsx';
 
 function CardSection () {
   const [activeCategory, setActiveCategory] = useState('semua');
+  const navigate = useNavigate()
+
+  const toAdmin = () => {
+    navigate ('/admin')
+  };
 
   const categories = [
     { id: 'semua', name: 'Semua Kelas' },
@@ -19,11 +25,11 @@ function CardSection () {
       imageUrl: "src/assets/images/Card-Images/img1.svg",
       title: "Dasar-dasar UI/UX Design",
       description: "Pelajari fundamental desain antarmuka pengguna modern",
-      profileIcon: "src/assets/images/Avatar-Icon/avatar1.svg",
-      profile: "Jenna Ortega",
-      status: "Senior Accountant di ",
+      avatar: "Harry Potter",
+      role: "Senior Accountant di ",
       ratingIcon: "src/assets/images/yellow-star.svg",
       rating: 4.5,
+      price: "300K"
     },
     {
       id: 2,
@@ -96,8 +102,8 @@ function CardSection () {
           <h3>Koleksi Video Pembelajaran Unggulan</h3>
           <p className='text-textDark-secondary mb-6'>Jelajahi Dunia Pengetahuan Melalui Pilihan Kami</p>
           
-          <div className='relative mb-8 overflow-hidden '>
-            <div className='flex overflow-x-auto pb-3 hide-scrollbar'>
+          <div className='relative mb-8 overflow-hidden'>
+            <div className='flex overflow-x-auto pb-3 hide-scrollbar justify-between'>
               <div className='flex gap-6 min-w-max'>
                 {categories.map((category) => (
                   <div key={category.id} className="relative">
@@ -124,9 +130,18 @@ function CardSection () {
                   </div>
                 ))}
               </div>
+              <button
+                type='button'
+                onClick={toAdmin}
+                className='rounded-2xl text-white bg-primary-default p-2'
+              >
+                Admin
+              </button>
             </div>
           </div>
-        
+          
+          
+
         {/* Cards Container */}
         <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6'>
         {filteredCards.length > 0 ? (
@@ -136,11 +151,12 @@ function CardSection () {
               imageUrl={card.imageUrl}
               title={card.title}
               description={card.description}
-              icon={card.profileIcon}
-              profile={card.profile}
+              avatar={card.avatar}
+              role={card.role}
               status={card.status}
               ratingIcon={card.ratingIcon}
               rating={card.rating}
+              price={card.price}
             />
           ))
         ) : (
@@ -155,4 +171,4 @@ function CardSection () {
 
 }
 
-export default CardSection
+export default CardSection;

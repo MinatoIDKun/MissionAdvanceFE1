@@ -1,5 +1,4 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
 import CardSection from '../organism/CardSection.jsx';
 import Hero from '../molecules/Hero.jsx';
 import Newsletter from '../molecules/Newsletter.jsx';

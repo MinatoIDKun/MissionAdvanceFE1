@@ -19,7 +19,7 @@ function LoginForm ({onLogin}) {
 
     const goToRegister = () => {
         navigate ('/register');
-    }
+    };
 
     const togglePasswordVisibility = () => {
         setShowPassword(!showPassword);

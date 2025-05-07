@@ -1,6 +1,16 @@
 import React from 'react';
 
-function Card({ imageUrl, title, description, profile, status, ratingIcon, rating, profileIcon}) {
+function Card({ 
+  imageUrl, 
+  title, 
+  description, 
+  avatar, 
+  role, 
+  ratingIcon, 
+  rating, 
+  profileIcon,
+  price
+}) {
   // const contentDescription = ()
 
 
@@ -39,16 +49,16 @@ function Card({ imageUrl, title, description, profile, status, ratingIcon, ratin
 
             <div className='flex flex-col'>
             <p className='text-dark-primary font-bold'>
-              {profile || "Jenna Ortega"}
+              {avatar || "Jenna Ortega"}
             </p>
 
             <p className='hidden md:block text-textDark-secondary'>
-              {status || "Senior accountant di "}
-              <span className='font-bold text-textDark-secondary'>Gojek</span>
+              {role || "Senior accountant di "}
+              <span className='font-bold text-textDark-secondary'>{ role || "Gojek" }</span>
             </p>
 
             <p className='block md:hidden text-textDark-secondary'>
-              {status || "Senior accountant"}
+              {role || "Senior accountant"}
             </p>
 
             </div>
@@ -80,7 +90,7 @@ function Card({ imageUrl, title, description, profile, status, ratingIcon, ratin
         </div>
 
         <div>
-          <h4 className='text-primary-default'>Rp 300K</h4>
+          <h4 className='text-primary-default'>{price || "300K"}</h4>
         </div>
       </div>
 
