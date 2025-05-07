@@ -2,7 +2,7 @@ import React from 'react';
 import Navbar from '../organism/Navbar';
 import Footer from '../organism/Footer';
 
-function NavbarFooter (isLoggedIn) {
+function RootLayouts (isLoggedIn) {
 
   return (
     <>
@@ -12,4 +12,4 @@ function NavbarFooter (isLoggedIn) {
   )
 }
 
-export default NavbarFooter
+export default RootLayouts

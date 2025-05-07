@@ -3,11 +3,10 @@ import { useNavigate } from 'react-router-dom';
 import CardSection from '../organism/CardSection.jsx';
 import Hero from '../molecules/Hero.jsx';
 import Newsletter from '../molecules/Newsletter.jsx';
-import NavbarFooter from '../layouts/NavbarFooter.jsx';
+import RootLayouts from '../layouts/RootLayouts.jsx';
 
 
 function Home() {
-
   return (
     <div className="flex flex-col min-h-screen bg-baseBackground">
       <main className="flex-grow pt-32">
@@ -26,7 +25,7 @@ function Home() {
         </div>
       </main>
       
-      <NavbarFooter isLoggedIn/>
+      <RootLayouts isLoggedIn/>
     </div>
   );
 }

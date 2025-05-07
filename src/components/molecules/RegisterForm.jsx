@@ -14,7 +14,7 @@ function RegisterForm () {
 
     const handleLogin = (e) => {
         e.preventDefault()
-        console.log('Login dengan:', email, kataSandi)
+        console.log('Login dengan:', email, kataSandi)  
 
         navigate ('/home')
     };
