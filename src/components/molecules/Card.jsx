@@ -1,7 +1,7 @@
 import React from 'react';
 
 function Card({ 
-  imageUrl, 
+  image, 
   title, 
   description, 
   avatar, 
@@ -9,7 +9,8 @@ function Card({
   ratingIcon, 
   rating, 
   profileIcon,
-  price
+  price,
+  category
 }) {
   // const contentDescription = ()
 
@@ -21,7 +22,7 @@ function Card({
       <div className='flex md:flex-col'>
         <div className="w-full h-48 overflow-hidden mb-4">
           <img 
-            src={imageUrl || "src/assets/images/Card-Images/img1.svg"} 
+            src={image || "src/assets/images/Card-Images/img1.svg"} 
             alt={title || "Card title"} 
             className="w-full h-full object-cover"
           />
@@ -51,10 +52,10 @@ function Card({
             <p className='text-dark-primary font-bold'>
               {avatar || "Jenna Ortega"}
             </p>
-
+            
             <p className='hidden md:block text-textDark-secondary'>
-              {role || "Senior accountant di "}
-              <span className='font-bold text-textDark-secondary'>{ role || "Gojek" }</span>
+              Senior accountant di
+              <span className='font-bold text-textDark-secondary ml-1'>{ role || "Gojek" }</span>
             </p>
 
             <p className='block md:hidden text-textDark-secondary'>

@@ -1,4 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { API_ENDPOINT } from '../../services/api/api';
+import axios from 'axios';
 import Card from '../molecules/Card';
 
 function Admin() {
@@ -12,7 +14,8 @@ function Admin() {
     ratingIcon: "src/assets/images/yellow-star.svg",
     rating: "",
     profileIcon: "",
-    price: ""
+    price: "",
+    category: "semua"
   });
   const [editMode, setEditMode] = useState(false);
   const [currentId, setCurrentId] = useState(null);
@@ -20,7 +23,28 @@ function Admin() {
   const [searchTerm, setSearchTerm] = useState("");
   const [imagePreview, setImagePreview] = useState(null);
   const [avatarPreview, setAvatarPreview] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
 
+  // Fetch all cards from API
+  useEffect(() => {
+    fetchCards();
+  }, []);
+
+  const fetchCards = async () => {
+    setLoading(true);
+    try {
+      const response = await axios.get(API_ENDPOINT.PRODUCTS);
+      console.log('Fetched data:', response.data);
+      setCards(response.data);
+      setError(null);
+    } catch (err) {
+      console.error('Error fetching cards:', err);
+      setError('Failed to fetch cards. Please try again.');
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -29,7 +53,6 @@ function Admin() {
       [name]: value
     });
   };
-
 
   const handleImageUpload = (e, type) => {
     const file = e.target.files[0];
@@ -64,7 +87,8 @@ function Admin() {
       ratingIcon: "src/assets/images/yellow-star.svg",
       rating: "",
       profileIcon: "",
-      price: ""
+      price: "",
+      category: "semua"
     });
     setImagePreview(null);
     setAvatarPreview(null);
@@ -80,8 +104,19 @@ function Admin() {
   const handleEdit = (id) => {
     const cardToEdit = cards.find(card => card.id === id);
     if (cardToEdit) {
-      setFormData(cardToEdit);
-      setImagePreview(cardToEdit.imageUrl);
+      setFormData({
+        imageUrl: cardToEdit.image || "",
+        title: cardToEdit.title || "",
+        description: cardToEdit.description || "",
+        avatar: cardToEdit.avatar || "",
+        role: cardToEdit.role || "",
+        ratingIcon: cardToEdit.ratingIcon || "src/assets/images/yellow-star.svg",
+        rating: cardToEdit.rating || "",
+        profileIcon: cardToEdit.profileIcon || "",
+        price: cardToEdit.price || "",
+        category: cardToEdit.category || "semua"
+      });
+      setImagePreview(cardToEdit.image);
       setAvatarPreview(cardToEdit.profileIcon);
       setEditMode(true);
       setCurrentId(id);
@@ -89,32 +124,66 @@ function Admin() {
     }
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
     
-    if (editMode) {
-      setCards(cards.map(card => 
-        card.id === currentId ? { ...formData, id: currentId } : card
-      ));
-    } else {
-      const newId = cards.length > 0 ? Math.max(...cards.map(card => card.id)) + 1 : 1;
-      setCards([...cards, { ...formData, id: newId }]);
+    // Format data for API
+    const cardData = {
+      image: formData.imageUrl,
+      title: formData.title,
+      description: formData.description,
+      avatar: formData.avatar,
+      role: formData.role,
+      ratingIcon: formData.ratingIcon,
+      rating: formData.rating,
+      profileIcon: formData.profileIcon,
+      price: formData.price,
+      category: formData.category
+    };
+    
+    try {
+      if (editMode) {
+        // Update existing card
+        await axios.put(`${API_ENDPOINT.PRODUCTS}/${currentId}`, cardData);
+      } else {
+        // Create new card
+        await axios.post(API_ENDPOINT.PRODUCTS, cardData);
+      }
+      
+      // Refresh cards list
+      fetchCards();
+      setIsModalOpen(false);
+      resetForm();
+      setError(null);
+    } catch (err) {
+      console.error('Error saving card:', err);
+      setError(`Failed to ${editMode ? 'update' : 'create'} card. Please try again.`);
+    } finally {
+      setLoading(false);
     }
-    
-    setIsModalOpen(false);
-    resetForm();
   };
 
-  const handleDelete = (id) => {
+  const handleDelete = async (id) => {
     if (window.confirm("Are you sure you want to delete this card?")) {
-      setCards(cards.filter(card => card.id !== id));
+      setLoading(true);
+      try {
+        await axios.delete(`${API_ENDPOINT.PRODUCTS}/${id}`);
+        fetchCards();
+        setError(null);
+      } catch (err) {
+        console.error('Error deleting card:', err);
+        setError('Failed to delete card. Please try again.');
+      } finally {
+        setLoading(false);
+      }
     }
   };
 
   const filteredCards = cards.filter(card => 
-    card.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    card.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    card.avatar.toLowerCase().includes(searchTerm.toLowerCase())
+    (card.title && card.title.toLowerCase().includes(searchTerm.toLowerCase())) ||
+    (card.description && card.description.toLowerCase().includes(searchTerm.toLowerCase())) ||
+    (card.avatar && card.avatar.toLowerCase().includes(searchTerm.toLowerCase()))
   );
 
   return (
@@ -134,16 +203,39 @@ function Admin() {
               <button
                 onClick={handleAddNew}
                 className="px-4 py-2 bg-primary-default text-white rounded-md hover:bg-primary-dark transition-colors duration-300"
+                disabled={loading}
               >
-                Add New Card
+                {loading ? 'Processing...' : 'Add New Card'}
               </button>
             </div>
           </div>
 
+          {error && (
+            <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
+              <p>{error}</p>
+            </div>
+          )}
+
+          {loading && !isModalOpen && (
+            <div className="flex justify-center items-center h-40">
+              <p className="text-gray-500">Loading cards...</p>
+            </div>
+          )}
+
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {filteredCards.map(card => (
+            {!loading && filteredCards.map(card => (
               <div key={card.id} className="relative group">
-                <Card {...card} />
+                <Card 
+                  image={card.image}
+                  title={card.title}
+                  description={card.description}
+                  avatar={card.avatar}
+                  role={card.role}
+                  profileIcon={card.profileIcon}
+                  ratingIcon={card.ratingIcon || "src/assets/images/yellow-star.svg"}
+                  rating={card.rating}
+                  price={card.price}
+                />
                 <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-30 transition-all duration-300 flex items-center justify-center opacity-0 group-hover:opacity-100">
                   <div className="flex gap-2">
                     <button
@@ -168,7 +260,7 @@ function Admin() {
             ))}
           </div>
 
-          {filteredCards.length === 0 && (
+          {!loading && filteredCards.length === 0 && (
             <div className="flex justify-center items-center h-40">
               <p className="text-gray-500">No cards found. Try a different search or add a new card.</p>
             </div>
@@ -187,12 +279,19 @@ function Admin() {
                   resetForm();
                 }}
                 className="text-gray-500 hover:text-gray-700"
+                disabled={loading}
               >
                 <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                 </svg>
               </button>
             </div>
+
+            {error && (
+              <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
+                <p>{error}</p>
+              </div>
+            )}
 
             <form onSubmit={handleSubmit} className="space-y-6">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -253,6 +352,24 @@ function Admin() {
                       rows="3"
                       className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-default focus:ring focus:ring-primary-default focus:ring-opacity-50 p-2 border"
                     ></textarea>
+                  </div>
+
+                  {/* Category */}
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">Category</label>
+                    <select
+                      name="category"
+                      value={formData.category}
+                      onChange={handleInputChange}
+                      required
+                      className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-default focus:ring focus:ring-primary-default focus:ring-opacity-50 p-2 border"
+                    >
+                      <option value="semua">Semua Kelas</option>
+                      <option value="pemasaran">Pemasaran</option>
+                      <option value="desain">Desain</option>
+                      <option value="pengembangan">Pengembangan Diri</option>
+                      <option value="bisnis">Bisnis</option>
+                    </select>
                   </div>
                 </div>
 
@@ -356,14 +473,16 @@ function Admin() {
                     resetForm();
                   }}
                   className="px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-default"
+                  disabled={loading}
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
                   className="px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-primary-default hover:bg-primary-dark focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-default"
+                  disabled={loading}
                 >
-                  {editMode ? 'Update Card' : 'Create Card'}
+                  {loading ? 'Processing...' : (editMode ? 'Update Card' : 'Create Card')}
                 </button>
               </div>
             </form>
